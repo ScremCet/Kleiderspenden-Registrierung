@@ -1,0 +1,62 @@
+---
+import 'bootstrap/dist/css/bootstrap.css'
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro Basics</title>
+	</head>
+	<body>
+		<!-- Banner Section -->
+		<div class="banner-section bg-light py-2 text-center border-bottom">
+			<!-- Space for banner content -->
+		</div>
+
+		<!-- Navigation Header -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/">Kleiderspenden</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="/">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Contact</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Main Content -->
+		<main>
+			<slot />
+		</main>
+	</body>
+</html>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+<script>
+	import 'bootstrap/dist/js/bootstrap.bundle.js'
+</script>

@@ -1,0 +1,32 @@
+{
+  "name": "kleiderspenden-registrierung",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@types/bootstrap": "^5.2.11",
+    "astro": "^7.2.4",
+    "astro-bootstrap": "^0.7.2",
+    "bootstrap": "^5.3.8"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "sharp@0.34.5": true,
+    "sharp@0.35.3": true,
+    "esbuild@0.27.7": true,
+    "esbuild@0.25.12": true
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1"
+  }
+}
