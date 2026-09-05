@@ -1,12 +1,61 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Welcome />
-	<p> Hello </p>
+	<div class="row">
+		<div class="col-lg-8 mx-auto">
+			<h2 class="mb-4">Willkommen!</h2>
+			<p class="lead">
+				Unterstützen Sie Menschen in Krisengebieten durch Ihre Kleiderspende. Es ist einfach und schnell!
+			</p>
+
+			<div class="row mt-5">
+				<div class="col-md-6 mb-4">
+					<div class="card h-100">
+						<div class="card-body">
+							<h5 class="card-title">📍 Übergabe an der Geschäftsstelle</h5>
+							<p class="card-text">
+								Besuchen Sie uns vor Ort und übergeben Sie Ihre Kleiderspende direkt. Registrierung erfolgt am Tablet an der Geschäftsstelle.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-4">
+					<div class="card h-100">
+						<div class="card-body">
+							<h5 class="card-title">🚐 Abholung durch Sammelfahrzeug</h5>
+							<p class="card-text">
+								Keine Zeit zu kommen? Kein Problem! Registrieren Sie Ihre Spende online und unser Sammelfahrzeug holt die Kleidung bei Ihnen ab.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-5">
+				<h3>Wie funktioniert es?</h3>
+				<ol class="list-group list-group-numbered mt-3">
+					<li class="list-group-item">
+						<strong>Registrierung:</strong> Registrieren Sie Ihre Spende über dieses Formular oder an unserem Tablet vor Ort.
+					</li>
+					<li class="list-group-item">
+						<strong>Kleidungsart auswählen:</strong> Geben Sie an, welche Art von Kleidung Sie spenden möchten.
+					</li>
+					<li class="list-group-item">
+						<strong>Krisengebiet wählen:</strong> Bestimmen Sie, für welches Krisengebiet Ihre Spende bestimmt ist.
+					</li>
+					<li class="list-group-item">
+						<strong>Bestätigung:</strong> Sie erhalten eine Bestätigung mit allen Daten Ihrer Spende.
+					</li>
+				</ol>
+			</div>
+
+			<div class="mt-5 p-4 bg-light rounded">
+				<h4>Möchten Sie jetzt eine Spende registrieren?</h4>
+				<p>Klicken Sie auf "Spende registrieren" in der Navigation oder hier:</p>
+				<a href="/registration" class="btn btn-primary btn-lg">Zur Registrierung</a>
+			</div>
+		</div>
+	</div>
 </Layout>

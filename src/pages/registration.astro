@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RegistrationForm from '../components/RegistrationForm.astro';
+
+// German federal states with their capitals and postal code prefixes
+const germanCities = [
+  { name: 'Berlin, Berlin', prefix: '10' },
+  { name: 'Stuttgart, Baden-Württemberg', prefix: '70' },
+  { name: 'München, Bayern', prefix: '80' },
+  { name: 'Potsdam, Brandenburg', prefix: '14' },
+  { name: 'Bremen, Bremen', prefix: '28' },
+  { name: 'Hamburg, Hamburg', prefix: '20' },
+  { name: 'Wiesbaden, Hessen', prefix: '65' },
+  { name: 'Schwerin, Mecklenburg-Vorpommern', prefix: '19' },
+  { name: 'Hannover, Niedersachsen', prefix: '30' },
+  { name: 'Düsseldorf, Nordrhein-Westfalen', prefix: '40' },
+  { name: 'Mainz, Rheinland-Pfalz', prefix: '55' },
+  { name: 'Saarbrücken, Saarland', prefix: '66' },
+  { name: 'Dresden, Sachsen', prefix: '01' },
+  { name: 'Magdeburg, Sachsen-Anhalt', prefix: '39' },
+  { name: 'Kiel, Schleswig-Holstein', prefix: '24' },
+  { name: 'Erfurt, Thüringen', prefix: '99' },
+];
+
+// Configuration
+const crisisAreas = [
+  'Ukraine',
+  'Syrien',
+  'Jemen',
+  'Afghanistan',
+  'Türkei',
+  'Somalia',
+  'Äthiopien',
+];
+---
+
+<Layout>
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <h2 class="mb-1">Kleiderspende registrieren</h2>
+      <p class="text-muted mb-4">Füllen Sie das folgende Formular aus, um Ihre Kleiderspende zu registrieren.</p>
+
+      <RegistrationForm
+        crisisAreas={crisisAreas} 
+        cities={germanCities}
+      />
+    </div>
+  </div>
+</Layout>
+
+

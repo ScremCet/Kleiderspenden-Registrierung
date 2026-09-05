@@ -1,46 +1,35 @@
-# Astro Starter Kit: Basics
+﻿# Kleiderspenden-Registrierung
 
-```sh
-npm create astro@latest -- --template basics
-```
+Eine Webanwendung zur Registrierung und Verwaltung von Kleiderspenden für Krisengebiete.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Features
 
-## 🚀 Project Structure
+- **Registrierungsformular**: Benutzerfreundliches Formular für Spender zur Registrierung von Kleiderspenden
+- **Standortbasierte Validierung**: Validierung von Abholadressen und Postleitzahlen gegen Geschäftsstellen
+- **Mehrere Abholoptionen**: Unterstützung für persönliche Übergabe und Abholung durch Sammelfahrzeuge
+- **Spendenverfolgung**: Kategorisierung von Spenden nach Kleidungstyp und Krisengebiet
 
-Inside of your Astro project, you'll see the following folders and files:
+## Schnellstart
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+Bitte stelle sicher, dass Node.js und npm auf deinem System installiert sind.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+    npm install          # Abhängigkeiten installieren
+    npm run dev          # Dev-Server starten auf localhost:4321
+    npm run build        # Für Produktion bauen
 
-## 🧞 Commands
+## Projekt Struktur
 
-All commands are run from the root of the project, from a terminal:
+    src/
+    ├── components/       # Formular- und UI-Komponenten
+    ├── layouts/          # Seiten-Layouts
+    ├── pages/            # Route-Seiten (Registrierung, Bestätigung, Rechtliche Seiten)
+    └── assets/           # Statische Assets
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Seiten
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+    / - Willkommensseite
+    /registration - Kleiderspenden-Registrierungsformular
+    /confirmation - Registrierungsbestätigung
+    /impressum - Impressum
+    /datenschutz - Datenschutzerklärung
+    /nutzungsbedingungen - Nutzungsbedingungen

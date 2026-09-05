@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">✓ Spende erfolgreich registriert!</h4>
+        <p>Vielen Dank für Ihre Kleiderspende. Unten finden Sie eine Übersicht aller Daten Ihrer Registrierung.</p>
+      </div>
+
+      <div id="confirmationContent" class="d-none">
+        <h3 class="mb-4">Registrierungsbestätigung</h3>
+
+        <div class="row mb-4">
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Art der Kleidung</h5>
+                <p class="card-text" id="confirmClothingType">-</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Krisengebiet</h5>
+                <p class="card-text" id="confirmCrisisArea">-</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Registrierungsdatum</h5>
+                <p class="card-text" id="confirmDate">-</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Registrierungszeit</h5>
+                <p class="card-text" id="confirmTime">-</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Ort</h5>
+                <p class="card-text" id="confirmLocation">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info">
+          <p class="mb-0" id="confirmInfoText">
+            Vielen Dank für Ihre Registrierung.
+          </p>
+        </div>
+      </div>
+
+      <div id="errorContent" class="d-none">
+        <div class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">Fehler</h4>
+          <p>Es wurden keine Registrierungsdaten gefunden. Bitte registrieren Sie Ihre Spende erneut.</p>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <a href="/registration" class="btn btn-primary me-2">Weitere Spende registrieren</a>
+        <a href="/" class="btn btn-secondary">Zur Startseite</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  function displayConfirmation() {
+    const confirmationContent = document.getElementById('confirmationContent') as HTMLElement | null;
+    const errorContent = document.getElementById('errorContent') as HTMLElement | null;
+    const confirmClothingType = document.getElementById('confirmClothingType') as HTMLElement | null;
+    const confirmCrisisArea = document.getElementById('confirmCrisisArea') as HTMLElement | null;
+    const confirmLocation = document.getElementById('confirmLocation') as HTMLElement | null;
+    const confirmDate = document.getElementById('confirmDate') as HTMLElement | null;
+    const confirmTime = document.getElementById('confirmTime') as HTMLElement | null;
+    const confirmInfoText = document.getElementById('confirmInfoText') as HTMLElement | null;
+
+    if (
+      !confirmationContent ||
+      !errorContent ||
+      !confirmClothingType ||
+      !confirmCrisisArea ||
+      !confirmLocation ||
+      !confirmDate ||
+      !confirmTime ||
+      !confirmInfoText
+    ) {
+      console.error('Missing confirmation page elements');
+      return;
+    }
+
+    const dataStr = sessionStorage.getItem('registrationData');
+    if (!dataStr) {
+      confirmationContent.classList.add('d-none');
+      errorContent.classList.remove('d-none');
+      return;
+    }
+
+    const clothingTypeMap = {
+      men: 'Herrenkleidung',
+      women: 'Damenkleidung',
+      children: 'Kinderkleidung',
+      mixed: 'Gemischte Kleidung',
+      winter: 'Winterkleidung',
+      summer: 'Sommerkleidung',
+    } as const;
+
+    type RegistrationData = {
+      clothingType?: keyof typeof clothingTypeMap | string;
+      crisisArea?: string;
+      location?: string;
+      timestamp?: string;
+      pickupType?: 'pickup' | 'inPerson';
+    };
+
+    const data = JSON.parse(dataStr) as RegistrationData;
+
+    confirmClothingType.textContent = clothingTypeMap[data.clothingType as keyof typeof clothingTypeMap] ?? data.clothingType ?? '-';
+    confirmCrisisArea.textContent = data.crisisArea ?? '-';
+    confirmLocation.textContent = data.location ?? '-';
+
+    const timestamp = data.timestamp ? new Date(data.timestamp) : new Date();
+    confirmDate.textContent = timestamp.toLocaleDateString('de-DE', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    confirmTime.textContent = timestamp.toLocaleTimeString('de-DE', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    confirmInfoText.textContent =
+      data.pickupType === 'pickup'
+        ? 'Unser Sammelfahrzeug wird sich in Kürze bei Ihnen melden, um einen Abholzeitpunkt zu vereinbaren.'
+        : 'Bitte besuchen Sie die Geschäftsstelle während der Öffnungszeiten und zeigen Sie diese Bestätigung vor.';
+
+    confirmationContent.classList.remove('d-none');
+    sessionStorage.removeItem('registrationData');
+  }
+
+  // Display confirmation on page load
+  displayConfirmation();
+</script>
+

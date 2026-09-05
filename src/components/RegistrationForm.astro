@@ -1,0 +1,310 @@
+﻿---
+interface Props {
+  crisisAreas: string[];
+  cities: Array<{ name: string; prefix: string }>;
+}
+
+const { crisisAreas, cities } = Astro.props;
+---
+
+<form id="registrationForm" class="needs-validation" novalidate>
+  <!-- Pickup Type Selection -->
+  <div class="mb-4">
+    <h5>Art der Übergabe</h5>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="pickupType"
+        id="pickupTypeInPerson"
+        value="inPerson"
+        required
+      />
+      <label class="form-check-label" for="pickupTypeInPerson">
+        Übergabe an der Geschäftsstelle
+      </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="pickupType"
+        id="pickupTypePickup"
+        value="pickup"
+        required
+      />
+      <label class="form-check-label" for="pickupTypePickup">
+        Abholung durch Sammelfahrzeug
+      </label>
+    </div>
+    <div class="invalid-feedback">
+      Bitte wählen Sie eine Option.
+    </div>
+  </div>
+
+  <!-- Business Location Selection (only visible for pickup) -->
+  <div id="businessLocationSection" class="mb-4 p-3 bg-info bg-opacity-10 rounded d-none">
+    <label for="businessLocation" class="form-label fw-bold">Geschäftsstelle auswählen</label>
+    <select class="form-select" id="businessLocation">
+      <option value="">-- Bitte wählen Sie Ihre nächste Geschäftsstelle --</option>
+      {cities.map((city) => (
+        <option value={city.prefix}>{city.name}</option>
+      ))}
+    </select>
+  </div>
+
+  <!-- Clothing Type (always visible) -->
+  <div class="mb-3">
+    <label for="clothingType" class="form-label">Art der Kleidung</label>
+    <select class="form-select" id="clothingType" name="clothingType" required>
+      <option value="">-- Bitte auswählen --</option>
+      <option value="men">Herrenkleidung</option>
+      <option value="women">Damenkleidung</option>
+      <option value="children">Kinderkleidung</option>
+      <option value="mixed">Gemischte Kleidung</option>
+      <option value="winter">Winterkleidung</option>
+      <option value="summer">Sommerkleidung</option>
+    </select>
+    <div class="invalid-feedback">
+      Bitte wählen Sie eine Art der Kleidung.
+    </div>
+  </div>
+
+  <!-- Crisis Area (always visible) -->
+  <div class="mb-3">
+    <label for="crisisArea" class="form-label">Krisengebiet</label>
+    <select class="form-select" id="crisisArea" name="crisisArea" required>
+      <option value="">-- Bitte auswählen --</option>
+      {crisisAreas.map((area) => (
+        <option value={area}>{area}</option>
+      ))}
+    </select>
+    <div class="invalid-feedback">
+      Bitte wählen Sie ein Krisengebiet.
+    </div>
+  </div>
+
+  <!-- Pickup Address (only visible for pickup type) -->
+  <div id="pickupAddressSection" class="d-none">
+    <div class="mb-3">
+      <label for="pickupAddress" class="form-label">Abholadresse</label>
+      <input
+        type="text"
+        class="form-control"
+        id="pickupAddress"
+        name="pickupAddress"
+        placeholder="Straße und Hausnummer"
+      />
+      <div class="invalid-feedback" id="pickupAddressValidation">
+        Bitte geben Sie eine gültige Adresse ein.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="pickupPostalCode" class="form-label">Postleitzahl</label>
+      <input
+        type="text"
+        class="form-control"
+        id="pickupPostalCode"
+        name="pickupPostalCode"
+        placeholder="PLZ"
+        maxlength="5"
+        pattern="[0-9]{5}"
+      />
+      <div class="form-text" id="postalCodeInfo"></div>
+      <div class="invalid-feedback" id="postalCodeValidation">
+        Die Postleitzahl muss in der Nähe der Geschäftsstelle liegen (erste zwei Ziffern
+        müssen gleich sein).
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ausgewählte Stadt</label>
+      <div class="p-2 bg-light border rounded text-muted" id="selectedBusinessLocation">
+        -- Bitte wählen Sie eine Geschäftsstelle aus --
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="d-grid">
+    <button class="btn btn-primary btn-lg" type="submit">
+      Spende registrieren
+    </button>
+  </div>
+</form>
+
+<script define:vars={{ cities }}>
+  const form = document.getElementById("registrationForm");
+  const pickupTypeRadios = document.querySelectorAll('input[name="pickupType"]');
+  const pickupAddressSection = document.getElementById("pickupAddressSection");
+  const businessLocationSection = document.getElementById("businessLocationSection");
+  const businessLocationSelect = document.getElementById("businessLocation");
+  const pickupPostalCode = document.getElementById("pickupPostalCode");
+  const postalCodeInfo = document.getElementById("postalCodeInfo");
+  const postalCodeValidation = document.getElementById("postalCodeValidation");
+  const pickupAddressInput = document.getElementById("pickupAddress");
+
+  let currentBusinessPrefix = null;
+  let currentBusinessName = null;
+  const selectedBusinessLocation = document.getElementById("selectedBusinessLocation");
+
+   // Listen for business location change
+   businessLocationSelect.addEventListener('change', (e) => {
+     currentBusinessPrefix = e.target.value;
+     // Clear postal code validation feedback if it was previously shown
+     pickupPostalCode.value = '';
+     postalCodeInfo.textContent = '';
+     pickupPostalCode.classList.remove("is-invalid");
+     pickupPostalCode.setCustomValidity("");
+     
+     if (currentBusinessPrefix) {
+       const selectedCity = cities.find(c => c.prefix === currentBusinessPrefix);
+       if (selectedCity) {
+         currentBusinessName = selectedCity.name;
+         // Update the display to show the city
+         selectedBusinessLocation.textContent = selectedCity.name;
+         selectedBusinessLocation.classList.remove("text-muted");
+         selectedBusinessLocation.classList.add("text-dark", "fw-bold");
+         postalCodeInfo.textContent = `Geschäftsstelle: ${selectedCity.name}`;
+         postalCodeInfo.classList.remove("text-danger");
+         postalCodeInfo.classList.add("text-info");
+       }
+     } else {
+       // Reset when no city is selected
+       currentBusinessName = null;
+       selectedBusinessLocation.textContent = "-- Bitte wählen Sie eine Geschäftsstelle aus --";
+       selectedBusinessLocation.classList.add("text-muted");
+       selectedBusinessLocation.classList.remove("text-dark", "fw-bold");
+     }
+   });
+
+  // Handle pickup type change
+  pickupTypeRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+      const isPickup = e.target.value === "pickup";
+
+      if (isPickup) {
+        // Show pickup sections
+        pickupAddressSection.classList.remove("d-none");
+        businessLocationSection.classList.remove("d-none");
+
+        // Add required to pickup address
+        pickupAddressInput.setAttribute("required", "");
+
+        pickupPostalCode.setAttribute("required", "");
+       } else {
+         // Show in-person sections
+         pickupAddressSection.classList.add("d-none");
+         businessLocationSection.classList.add("d-none");
+
+         // Remove required from pickup address
+         pickupAddressInput.removeAttribute("required");
+
+         pickupPostalCode.removeAttribute("required");
+         businessLocationSelect.value = '';
+         currentBusinessPrefix = null;
+         currentBusinessName = null;
+         selectedBusinessLocation.textContent = "-- Bitte wählen Sie eine Geschäftsstelle aus --";
+         selectedBusinessLocation.classList.add("text-muted");
+         selectedBusinessLocation.classList.remove("text-dark", "fw-bold");
+       }
+    });
+  });
+
+   // Handle postal code validation
+   pickupPostalCode.addEventListener("change", (e) => {
+     validatePostalCode();
+   });
+
+   // Also validate on input for real-time feedback
+   pickupPostalCode.addEventListener("input", (e) => {
+     validatePostalCode();
+   });
+
+   function validatePostalCode() {
+     const postalCode = pickupPostalCode.value;
+
+     // Check if a business location was selected
+     if (!currentBusinessPrefix) {
+       postalCodeValidation.textContent = "Bitte wählen Sie zuerst eine Geschäftsstelle aus.";
+       pickupPostalCode.classList.add("is-invalid");
+       pickupPostalCode.setCustomValidity("Bitte wählen Sie zuerst eine Geschäftsstelle aus.");
+       return;
+     }
+
+     if (postalCode.length === 5) {
+       const prefix = postalCode.substring(0, 2);
+       if (prefix === currentBusinessPrefix) {
+         postalCodeInfo.textContent = "✓ Postleitzahl liegt in der Nähe der Geschäftsstelle";
+         postalCodeInfo.classList.add("text-success");
+         postalCodeInfo.classList.remove("text-danger", "text-info");
+         pickupPostalCode.classList.remove("is-invalid");
+         pickupPostalCode.setCustomValidity("");
+       } else {
+         postalCodeInfo.textContent = `✗ Postleitzahl liegt nicht in der Nähe. Erwartet: ${currentBusinessPrefix}...`;
+         postalCodeInfo.classList.add("text-danger");
+         postalCodeInfo.classList.remove("text-success", "text-info");
+         pickupPostalCode.classList.add("is-invalid");
+         pickupPostalCode.setCustomValidity("Die Postleitzahl muss in der Nähe der Geschäftsstelle liegen (erste zwei Ziffern müssen gleich sein).");
+       }
+     } else {
+       postalCodeInfo.textContent = "";
+       postalCodeInfo.classList.remove("text-success", "text-danger", "text-info");
+       pickupPostalCode.classList.remove("is-invalid");
+       pickupPostalCode.setCustomValidity("");
+     }
+   }
+
+  // Handle form submission
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Check if business location was selected for pickup orders
+    const pickupTypeRadio = document.querySelector('input[name="pickupType"]:checked');
+    if (!pickupTypeRadio) {
+      form.classList.add("was-validated");
+      return;
+    }
+
+    const pickupType = pickupTypeRadio.value;
+    if (pickupType === "pickup" && !currentBusinessPrefix) {
+      alert("Bitte wählen Sie eine Geschäftsstelle aus.");
+      return;
+    }
+
+    if (!form.checkValidity()) {
+      form.classList.add("was-validated");
+      return;
+    }
+
+    // Collect form data
+    const formData = new FormData(form);
+    const data = {
+      pickupType: formData.get("pickupType"),
+      clothingType: formData.get("clothingType"),
+      crisisArea: formData.get("crisisArea"),
+      timestamp: new Date().toISOString(),
+      businessPrefix: currentBusinessPrefix,
+      location:
+        formData.get("pickupType") === "pickup"
+          ? `${formData.get("pickupAddress")}, ${formData.get("pickupPostalCode")} ${currentBusinessName ?? ""}`.trim()
+          : "Geschäftsstelle",
+    };
+
+    if (data.pickupType === "pickup") {
+      data.pickupAddress = formData.get("pickupAddress");
+      data.pickupPostalCode = formData.get("pickupPostalCode");
+      data.pickupCity = currentBusinessName;
+    }
+
+    // Store data in session storage and redirect to confirmation
+    sessionStorage.setItem("registrationData", JSON.stringify(data));
+    window.location.href = "/confirmation";
+  });
+</script>
+
+
+
+
+

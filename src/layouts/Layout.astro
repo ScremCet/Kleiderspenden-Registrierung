@@ -1,59 +1,53 @@
 ---
 import 'bootstrap/dist/css/bootstrap.css'
+import Header from '../components/Header.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="de">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Kleiderspenden Registrierung</title>
 	</head>
-	<body>
-		<!-- Banner Section -->
-		<div class="banner-section bg-light py-2 text-center border-bottom">
-			<!-- Space for banner content -->
-		</div>
-
-		<!-- Navigation Header -->
-		<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="/">Kleiderspenden</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav ms-auto">
-						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="/">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">About</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Contact</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+	<body class="d-flex flex-column min-vh-100">
+		<Header />
+		<Navigation />
 
 		<!-- Main Content -->
-		<main>
-			<slot />
+		<main class="flex-grow-1 py-5">
+			<div class="container-fluid">
+				<slot />
+			</div>
 		</main>
+
+		<Footer />
 	</body>
 </html>
 
 <style>
-	html,
-	body {
+	:global(html),
+	:global(body) {
 		margin: 0;
 		width: 100%;
 		height: 100%;
+	}
+	
+	:global(.min-vh-100) {
+		min-height: 100vh;
+	}
+	
+	:global(.text-white-50) {
+		color: rgba(255, 255, 255, 0.5) !important;
+	}
+	
+	:global(.text-white-50:hover) {
+		color: rgba(255, 255, 255, 0.8) !important;
 	}
 </style>
 
