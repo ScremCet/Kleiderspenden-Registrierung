@@ -202,6 +202,15 @@ const { crisisAreas, cities } = Astro.props;
          pickupAddressInput.removeAttribute("required");
 
          pickupPostalCode.removeAttribute("required");
+         // Clear postal code validation state
+         pickupPostalCode.setCustomValidity("");
+         pickupPostalCode.classList.remove("is-invalid");
+         postalCodeInfo.textContent = "";
+         postalCodeInfo.classList.remove("text-success", "text-danger", "text-info");
+         // Reset postal code and address values
+         pickupPostalCode.value = '';
+         pickupAddressInput.value = '';
+         
          businessLocationSelect.value = '';
          currentBusinessPrefix = null;
          currentBusinessName = null;
@@ -303,6 +312,8 @@ const { crisisAreas, cities } = Astro.props;
     window.location.href = "/confirmation";
   });
 </script>
+
+
 
 
 
